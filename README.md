@@ -375,7 +375,7 @@ time_wait 的连接本身资源占用很少，通常不用担心 time_wait 过�
 ### http 2 有了解过么，新增了哪些功能，现在用的什么版本？1.1？
 
 ```
-1. 二进制传输，HTTP/2 将请求和响应数据分割为更小的帧(header帧，data帧)，并且它们采用二进制编码
+1. 二进制传输(二进制分帧)，HTTP/2 将请求和响应数据分割为更小的帧(header帧，data帧)，并且它们采用二进制编码
 2. 多路复用
 3. Header 压缩
 4. Server Push
@@ -409,7 +409,42 @@ listen 443 ssl http2;
 
 
 
-http 缓存机制都有哪些？什么是 cdn？header 中涉及到缓存的字段有哪些？
+### http 缓存机制都有哪些？什么是 cdn？header 中涉及到缓存的字段有哪些？
+
+```
+强制缓存：
+- 服务器通知浏览器一个缓存时间，在缓存时间内，下次请求，直接用缓存，不在时间内，执行比较缓存策略。
+字段有如下
+Expires
+Cache-Control
+- private:       客户端可以缓存
+- public:        客户端和代理服务器都可缓存
+- max-age=xxx:   缓存的内容将在 xxx 秒后失效
+- no-cache:      需要使用对比缓存来验证缓存数据（后面介绍）
+- no-store:      所有内容都不会缓存，强制缓存，对比缓存都不会触发
+
+对比缓存：
+- 将缓存信息中的Etag和Last-Modified通过请求发送给服务器，由服务器校验，返回304状态码时，浏览器直接使用缓存。
+字段如下
+Last-Modified / If-Modified-Since
+Etag / If-None-Match
+
+
+CDN 的全称是 Content Delivery Network，即内容分发网络。
+```
+
+[彻底弄懂HTTP缓存机制及原理](https://www.cnblogs.com/chenqf/p/6386163.html)
+
+#### 发散问题：cdn 原理？作用？
+
+```
+
+```
+
+
+
+
+
 html 页面，怎么与后端交互？流程是什么？涉及到哪些组件？
 keepalive 有什么用？
 http 协议，报文格式？

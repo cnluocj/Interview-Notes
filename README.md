@@ -547,9 +547,19 @@ get, post, put, delete, options, trace, head, connect
 
 
 
+### 三次握手、四次挥手，为什么time_wait，2MSL具体多长时间
+
+```
+在四次挥手中，假设没有 time_wait，
+主动方 发送最后的 ACK 后直接关闭，如果该 ACK 丢失了
+被动方 重新发起 FIN，主动方 不再保存这个连接的信息，
+收到一个不存在的连接的包，主动方 会响应 RST 包，导致 被动方 端异常响应。
+
+MSL 的时长被 RFC 定义为 2分钟，但在不同的 unix 实现上，这个值不并确定，我们常用的 centOS 上，它被定义为 30s，我们可以通过 /proc/sys/net/ipv4/tcp_fin_timeout 这个文件查看和修改这个值。
+```
 
 
-三次握手、四次挥手，为什么time_wait，2MSL具体多长时间
+
 http的一些字段，就你知道的回答一些
 三次握手和四次挥手、为什么需要三次握手
 http和https的区别，CA证书的优缺点，https抓包的时候出现的是什么，https防护的是什么
